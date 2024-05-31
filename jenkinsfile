@@ -1,0 +1,29 @@
+pipeline {
+    agent {
+        label "jenkins"
+    }
+    stages {
+        stage("github") {
+            steps {
+                git "https://github.com/SRINATHR2001/file_transfer.git"
+            }
+        }
+        stage("deploy") {
+            steps {
+                // Change working directory to the cloned repository
+                dir("file_transfer") {
+                    // Execute commands sequentially
+                    sh "python3 app.py"
+                }
+            }
+        }        
+    }
+    post {
+        success {
+            echo "========pipeline executed successfully ========"
+        }
+        failure {
+            echo "========pipeline execution failed========"
+        }
+    }
+}
